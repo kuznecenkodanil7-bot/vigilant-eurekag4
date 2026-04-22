@@ -1,3 +1,10 @@
 {
-  "modmenu.descriptionTranslation.chattabs": "Separate chat tabs and filters"
+  "chattabs.tab.all": "All",
+  "chattabs.tab.global": "Global",
+  "chattabs.tab.private": "Private",
+  "chattabs.tab.party": "Party",
+  "chattabs.tab.trade": "Trade",
+  "chattabs.tab.system": "System",
+  "chattabs.button.reload": "Reload",
+  "chattabs.title.settings": "ChatTabs Settings"
 }

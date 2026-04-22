@@ -2,16 +2,13 @@
   "schemaVersion": 1,
   "id": "chattabs",
   "version": "${version}",
-  "name": "Chat Tabs",
-  "description": "Separate chat tabs with text and regex filters for Minecraft 1.21.11.",
+  "name": "ChatTabs",
+  "description": "Laby-style chat tabs for Fabric.",
   "authors": ["OpenAI"],
-  "contact": {},
-  "license": "MIT",
-  "icon": "assets/chattabs/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.example.chattabs.ChatTabsModClient"
+      "com.example.chattabs.ChatTabsClient"
     ]
   },
   "mixins": [

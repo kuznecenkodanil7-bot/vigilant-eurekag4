@@ -1,127 +1,23 @@
-# ChatTabs for Fabric 1.21.11
+# ChatTabs v3 — Laby-style Dark RU
 
-Клиентский мод для Minecraft **1.21.11** с вкладками чата и фильтрацией сообщений в стиле LabyMod.
+Исходник клиента Fabric под Minecraft 1.21.11.
 
-## Что умеет
+Что есть:
+- тёмные вкладки поверх чата;
+- русские названия вкладок;
+- вкладки: Все / Глобал / ЛС / Пати / Торговля / Система;
+- переключение колесом мыши;
+- фильтрация текста по простым правилам;
+- GitHub Actions для сборки jar.
 
-- отдельные вкладки чата;
-- фильтрация по `contains`, `regex` и типам сообщений;
-- отдельный цвет для каждой вкладки;
-- сохранение активной вкладки между перезапусками;
-- переключение вкладок колесом мыши в открытом чате;
-- быстрая перезагрузка конфига через кнопку `Reload` или команду `/chattabs`.
+Что может потребовать 1 правку:
+- сигнатура mixin в `ChatHudMixin.java` иногда меняется между Yarn build'ами. Если GitHub Actions упадёт на `addMessage`, открой логи и пришли ошибку — там обычно нужен один точный фикс сигнатуры.
 
-## Команды
+Как собрать:
+1. Залей проект в GitHub.
+2. Открой Actions.
+3. Запусти `Build Fabric Mod`.
+4. Скачай artifact `ChatTabs-v3`.
 
-- `/chattabs` — перезагрузить конфиг;
-- `/chattabs next` — следующая вкладка;
-- `/chattabs prev` — предыдущая вкладка;
-- `/chattabs set <index>` — выбрать вкладку по индексу.
-
-## Конфиг
-
-После первого запуска создаётся файл:
-
-```text
-config/chattabs.json
-```
-
-Также отдельно сохраняется выбранная вкладка:
-
-```text
-config/chattabs-state.json
-```
-
-### Пример конфига
-
-```json
-{
-  "tabs": [
-    {
-      "name": "All",
-      "all": true,
-      "color": "white",
-      "contains": [],
-      "regex": [],
-      "excludesContains": [],
-      "excludesRegex": [],
-      "messageTypes": [],
-      "caseSensitive": false,
-      "matchAllRules": false
-    },
-    {
-      "name": "PM",
-      "all": false,
-      "color": "light_purple",
-      "contains": [],
-      "regex": ["(?i)whispers to you", "(?i)from ", "(?i)to "],
-      "excludesContains": [],
-      "excludesRegex": [],
-      "messageTypes": ["private"],
-      "caseSensitive": false,
-      "matchAllRules": false
-    },
-    {
-      "name": "Trade",
-      "all": false,
-      "color": "gold",
-      "contains": [],
-      "regex": ["(?i)\\b(buy|sell|wts|wtb|trade|auction|market|shop|продам|куплю|обмен)\\b"],
-      "excludesContains": [],
-      "excludesRegex": [],
-      "messageTypes": ["trade"],
-      "caseSensitive": false,
-      "matchAllRules": false
-    }
-  ],
-  "maxStoredMessages": 2000,
-  "buttonWidth": 72,
-  "buttonHeight": 18,
-  "buttonGap": 3,
-  "buttonsY": 4,
-  "scrollToSwitchTabs": true,
-  "invertScroll": false,
-  "showReloadButton": true
-}
-```
-
-## Доступные типы сообщений
-
-- `chat`
-- `private`
-- `party`
-- `trade`
-- `system`
-- `game_info`
-- `global`
-- `unknown`
-
-## Цвета вкладок
-
-Используются стандартные значения `Formatting`, например:
-
-- `white`
-- `yellow`
-- `gold`
-- `green`
-- `aqua`
-- `blue`
-- `light_purple`
-- `red`
-- `gray`
-
-## Сборка
-
-```bash
-./gradlew build
-```
-
-Готовый jar появится в:
-
-```text
-build/libs/
-```
-
-## Замечания
-
-Это клиентский мод. Для разных серверов шаблоны чата могут отличаться, поэтому фильтры `regex` и `contains` лучше подстраивать под формат конкретного сервера.
+Важно:
+- Это **не копия LabyMod**. Это самостоятельный мод в похожем современном стиле.

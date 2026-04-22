@@ -1,16 +1,17 @@
 pluginManagement {
     repositories {
-        maven { url 'https://maven.fabricmc.net/' }
+        maven { url = 'https://maven.fabricmc.net/' }
         gradlePluginPortal()
         mavenCentral()
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.PREFER_SETTINGS
     repositories {
-        maven { url 'https://maven.fabricmc.net/' }
+        maven { url = 'https://maven.fabricmc.net/' }
         mavenCentral()
     }
 }
 
-rootProject.name = "chattabs"
+rootProject.name = 'chattabs'
