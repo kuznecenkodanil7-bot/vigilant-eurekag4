@@ -12,17 +12,17 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Install Java
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
-      - name: Allow gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build jar
-        run: ./gradlew build
+        run: gradle build
 
       - name: Upload mod
         uses: actions/upload-artifact@v4
