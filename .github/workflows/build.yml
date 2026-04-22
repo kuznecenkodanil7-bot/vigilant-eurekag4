@@ -1,0 +1,31 @@
+name: Build Fabric Mod
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Allow gradlew
+        run: chmod +x gradlew
+
+      - name: Build jar
+        run: ./gradlew build
+
+      - name: Upload mod
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChatTabsMod
+          path: build/libs/*.jar
