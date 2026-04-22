@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.text.Text;
 
@@ -37,7 +38,7 @@ public final class ChatTabsState {
     public static void reloadConfig() {
         config = loadConfig();
         if (config.tabs.isEmpty()) {
-            config.tabs.add(ChatTabsConfig.createDefault().tabs.getFirst());
+            config.tabs.add(ChatTabsConfig.createDefault().tabs.get(0));
         }
         ensureActiveIndexIsValid();
         applyCurrentTab();
@@ -81,9 +82,9 @@ public final class ChatTabsState {
             return;
         }
         MESSAGES.add(new StoredMessage(text.copy(), raw, MessageKind.detect(raw, indicator)));
-        int max = Math.max(100, getConfig().maxStoredMessages);
+        int max = Math.max(200, getConfig().maxStoredMessages);
         while (MESSAGES.size() > max) {
-            MESSAGES.removeFirst();
+            MESSAGES.remove(0);
         }
     }
 
@@ -137,18 +138,27 @@ public final class ChatTabsState {
             return;
         }
 
+        ChatHud chatHud = client.inGameHud.getChatHud();
         replaying = true;
         try {
-            client.inGameHud.getChatHud().clear(false);
+            chatHud.clear(false);
             ChatTabsConfig.TabDefinition tab = getActiveTab();
             for (StoredMessage stored : MESSAGES) {
                 if (tab.matches(stored)) {
-                    client.inGameHud.getChatHud().addMessage(stored.text());
+                    chatHud.addMessage(stored.text());
                 }
             }
         } finally {
             replaying = false;
         }
+    }
+
+    public static String describeActiveTab() {
+        ChatTabsConfig.TabDefinition tab = getActiveTab();
+        if (getConfig().showIndexInFeedback) {
+            return "[" + activeTabIndex + "] " + tab.name;
+        }
+        return tab.name;
     }
 
     private static void ensureActiveIndexIsValid() {
@@ -220,13 +230,15 @@ public final class ChatTabsState {
         public static MessageKind detect(String raw, MessageIndicator indicator) {
             String lower = raw.toLowerCase(Locale.ROOT);
 
-            if (lower.contains("whispers to you") || lower.contains("from ") && lower.contains("msg") || lower.contains("личное") || lower.contains("шепчет")) {
+            if (lower.contains("whispers to you") || lower.contains("msg from") || lower.contains("msg to")
+                    || lower.contains("tell from") || lower.contains("tell to")
+                    || lower.contains("личное") || lower.contains("шепчет")) {
                 return PRIVATE;
             }
             if (lower.contains("[party]") || lower.contains("[p]") || lower.contains("[группа]")) {
                 return PARTY;
             }
-            if (lower.matches(".*\\b(buy|sell|wts|wtb|trade|auction|market|shop|продам|куплю|обмен)\\b.*")) {
+            if (lower.matches(".*\\b(buy|sell|wts|wtb|trade|auction|market|shop|продам|куплю|обмен|магазин|аукцион)\\b.*")) {
                 return TRADE;
             }
             if (lower.startsWith("[") && lower.contains("]")) {
@@ -243,7 +255,9 @@ public final class ChatTabsState {
                 }
             }
 
-            if (lower.contains("joined the game") || lower.contains("left the game") || lower.contains("достижение") || lower.contains("achievement") || lower.contains("advancement")) {
+            if (lower.contains("joined the game") || lower.contains("left the game")
+                    || lower.contains("achievement") || lower.contains("advancement")
+                    || lower.contains("достижение") || lower.contains("вышел") || lower.contains("зашел")) {
                 return SYSTEM;
             }
 

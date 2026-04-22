@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "chattabs",
   "version": "${version}",
-  "name": "Chat Tabs",
-  "description": "Separate chat tabs with text and regex filters for Minecraft 1.21.11.",
+  "name": "Chat Tabs v2",
+  "description": "Client-side chat tabs with filters, wheel switching and config reload for Fabric.",
   "authors": ["OpenAI"],
   "contact": {},
   "license": "MIT",
@@ -18,8 +18,8 @@
     "chattabs.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.18.1",
-    "minecraft": "~1.21.11",
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.21.1",
     "java": ">=21",
     "fabric-api": "*"
   }

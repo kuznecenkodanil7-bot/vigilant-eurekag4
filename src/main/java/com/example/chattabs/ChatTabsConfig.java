@@ -6,14 +6,15 @@ import java.util.Locale;
 
 public final class ChatTabsConfig {
     public List<TabDefinition> tabs = new ArrayList<>();
-    public int maxStoredMessages = 2000;
-    public int buttonWidth = 72;
+    public int maxStoredMessages = 3000;
+    public int buttonWidth = 78;
     public int buttonHeight = 18;
     public int buttonGap = 3;
     public int buttonsY = 4;
     public boolean scrollToSwitchTabs = true;
     public boolean invertScroll = false;
     public boolean showReloadButton = true;
+    public boolean showIndexInFeedback = true;
 
     public static ChatTabsConfig createDefault() {
         ChatTabsConfig config = new ChatTabsConfig();
@@ -24,15 +25,23 @@ public final class ChatTabsConfig {
         all.color = "white";
         config.tabs.add(all);
 
+        TabDefinition global = new TabDefinition();
+        global.name = "Global";
+        global.color = "gray";
+        global.messageTypes.add("global");
+        config.tabs.add(global);
+
         TabDefinition privateTab = new TabDefinition();
-        privateTab.name = "PM";
+        privateTab.name = "Private";
         privateTab.color = "light_purple";
         privateTab.messageTypes.add("private");
         privateTab.regex.add("(?i)whispers to you");
-        privateTab.regex.add("(?i)from ");
-        privateTab.regex.add("(?i)to ");
         privateTab.regex.add("(?i)msg from");
         privateTab.regex.add("(?i)msg to");
+        privateTab.regex.add("(?i)tell from");
+        privateTab.regex.add("(?i)tell to");
+        privateTab.regex.add("(?i)личное сообщение");
+        privateTab.regex.add("(?i)шепчет");
         config.tabs.add(privateTab);
 
         TabDefinition party = new TabDefinition();
@@ -48,7 +57,7 @@ public final class ChatTabsConfig {
         trade.name = "Trade";
         trade.color = "gold";
         trade.messageTypes.add("trade");
-        trade.regex.add("(?i)\\b(buy|sell|wts|wtb|trade|auction|market|shop|продам|куплю|обмен)\\b");
+        trade.regex.add("(?i)\\b(buy|sell|wts|wtb|trade|auction|market|shop|продам|куплю|обмен|магазин|аукцион)\\b");
         config.tabs.add(trade);
 
         TabDefinition system = new TabDefinition();

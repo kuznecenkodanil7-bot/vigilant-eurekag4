@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin extends Screen {
-
     protected ChatScreenMixin(Text title) {
         super(title);
     }
@@ -30,15 +29,14 @@ public abstract class ChatScreenMixin extends Screen {
         for (int i = 0; i < ChatTabsState.getConfig().tabs.size(); i++) {
             final int index = i;
             var tab = ChatTabsState.getConfig().tabs.get(i);
-
             boolean active = index == ChatTabsState.getActiveTabIndex();
 
             MutableText label = Text.literal(active ? "[" + tab.name + "]" : tab.name)
                     .formatted(resolveFormatting(tab.color, active));
 
-            ButtonWidget button = ButtonWidget.builder(label, press -> {
-                ChatTabsState.setActiveTab(index);
-            }).dimensions(x, y, width, height).build();
+            ButtonWidget button = ButtonWidget.builder(label, press -> ChatTabsState.setActiveTab(index))
+                    .dimensions(x, y, width, height)
+                    .build();
 
             this.addDrawableChild(button);
             x += width + ChatTabsState.getConfig().buttonGap;
@@ -66,9 +64,7 @@ public abstract class ChatScreenMixin extends Screen {
             return;
         }
 
-        if (ChatTabsState.getConfig().invertScroll
-                ? verticalAmount < 0
-                : verticalAmount > 0) {
+        if (ChatTabsState.getConfig().invertScroll ? verticalAmount < 0 : verticalAmount > 0) {
             ChatTabsState.previousTab();
         } else {
             ChatTabsState.nextTab();
@@ -78,14 +74,17 @@ public abstract class ChatScreenMixin extends Screen {
     }
 
     private static Formatting resolveFormatting(String colorName, boolean active) {
-        if (colorName == null || colorName.isBlank()) {
-            return active ? Formatting.GREEN : Formatting.WHITE;
+        if (active) {
+            return Formatting.BOLD;
         }
-
+        if (colorName == null || colorName.isBlank()) {
+            return Formatting.WHITE;
+        }
         try {
-            return Formatting.valueOf(colorName.trim().toUpperCase());
-        } catch (Exception e) {
-            return active ? Formatting.GREEN : Formatting.WHITE;
+            Formatting value = Formatting.byName(colorName);
+            return value == null ? Formatting.WHITE : value;
+        } catch (Exception ignored) {
+            return Formatting.WHITE;
         }
     }
 }
